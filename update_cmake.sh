@@ -4,6 +4,10 @@
 # @author Alexander Hinze
 # @since 06/08/2023
 
+if [ "$1" = "push" ]; then
+	export PUSH_DIRECTLY=true
+fi
+
 export PREV_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
 if [ `git rev-parse --verify develop 2>/dev/null` ]; then
@@ -16,12 +20,17 @@ git pull
 cd ..
 git add -A
 git commit -m "Update CMake submodule to latest commit"
-git push
+
+if [ "$PUSH_DIRECTLY" = true ]; then
+	git push
+fi
 
 if [ "$HAS_DEVELOP" = true ]; then
 	git checkout master
 	git merge develop
-	git push
+	if [ "$PUSH_DIRECTLY" = true ]; then
+		git push
+	fi
 fi
 
 git checkout $PREV_BRANCH
