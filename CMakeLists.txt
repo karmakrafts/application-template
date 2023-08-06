@@ -9,23 +9,18 @@ endif()
 
 # Include CMake modules in ./cmake/
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake;")
-include(Platform)
-include(CommonLibraries)
-include_scripts() # Enable sanitizers on supported platforms and extend compiler warnings
+include(CmxPlatform)
+include(CmxScripts)
+include(CmxApplication)
+cmx_include_scripts() # Enable sanitizers on supported platforms and extend compiler warnings
 
 # Executable
-file(GLOB_RECURSE SOURCE_FILES "${CMAKE_SOURCE_DIR}/src/*.cpp")
-add_executable(example ${SOURCE_FILES})
-target_include_directories(example PUBLIC "${CMAKE_SOURCE_DIR}/include")
-
-# Static library
-add_library(example-static STATIC ${SOURCE_FILES})
-target_include_directories(example-static PUBLIC "${CMAKE_SOURCE_DIR}/include")
+cmx_add_application(example "${CMAKE_SOURCE_DIR}/src" "${CMAKE_SOURCE_DIR}/include")
 
 # Unit testing
 file(GLOB_RECURSE TEST_SOURCE_FILES "${CMAKE_SOURCE_DIR}/test/*.cpp")
 add_executable(example-tests "${TEST_SOURCE_FILES}")
-target_include_directories(example-tests PUBLIC "${CMAKE_SOURCE_DIR}/include")
+target_include_directories(example-tests PRIVATE "${CMAKE_SOURCE_DIR}/include")
 target_include_gtest(example-tests)
-target_link_libraries(example-tests example-static)
+target_link_libraries(example-tests PRIVATE example-static)
 add_dependencies(example-tests example-static)
