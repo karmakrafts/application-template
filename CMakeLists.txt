@@ -8,7 +8,7 @@ include(Cmx)
 cmx_include_scripts() # Enable sanitizers and extended compiler warnings on supported platforms
 
 # Define an application (example) and a static library (example-static) in one swoop
-cmx_add_application(example "${CMAKE_SOURCE_DIR}/src")
+cmx_add_application(example "${CMAKE_SOURCE_DIR}/src" "${CMAKE_SOURCE_DIR}/include")
 
 # Define a unit testing target (using Google Test) to run with CTest
 cmx_add_tests(example-tests "${CMAKE_SOURCE_DIR}/test")
