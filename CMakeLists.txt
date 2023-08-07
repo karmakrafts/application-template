@@ -3,7 +3,7 @@ project(example LANGUAGES C CXX)
 
 # Include CMX into the project
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake;")
-include(Cmx)
+include(cmx)
 
 cmx_include_scripts() # Enable sanitizers and extended compiler warnings on supported platforms
 
